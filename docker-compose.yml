@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  application:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    working_dir: /var/www/
+    command: "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./:/var/www/
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+      
+
+  mysql:
+    image: mysql
+    restart: always
+    ports:
+      - 3311:3306
+    volumes:
+      - ./.docker/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    networks:
+      - app-network
+  
+  redis:
+    image: redis:latest
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
