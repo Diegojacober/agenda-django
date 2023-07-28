@@ -19,3 +19,6 @@ class ContactAdmin(admin.ModelAdmin):
     #Link para o registro
     list_display_links = ('id', 'phone',)
     
+@admin.register(models.Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name',)
