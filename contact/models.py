@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -22,7 +23,7 @@ class Contact(models.Model):
     show = models.BooleanField(default=True)
     picture = models.ImageField(blank=True, upload_to='pictures/%Y/%m/%d/')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
-    
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     # Consultas lazy = não vão até a base de dados até que o valor seja requisitado
      
     
