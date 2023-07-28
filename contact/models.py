@@ -8,7 +8,11 @@ class Contact(models.Model):
     email = models.EmailField(max_length=250)
     created_at = models.DateTimeField(default=timezone.now)
     description = models.TextField()
+    show = models.BooleanField(default=True)
+    picture = models.ImageField(blank=True, upload_to='pictures/%Y/%m/%d/')
     
+    # Consultas lazy = não vão até a base de dados até que o valor seja requisitado
+     
     
     def __str__(self) -> str:
         # Como vejo o usuário
