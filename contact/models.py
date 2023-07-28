@@ -8,3 +8,8 @@ class Contact(models.Model):
     email = models.EmailField(max_length=250)
     created_at = models.DateTimeField(default=timezone.now)
     description = models.TextField()
+    
+    
+    def __str__(self) -> str:
+        # Como vejo o usuário
+        return f"{self.first_name} {self.last_name}"
