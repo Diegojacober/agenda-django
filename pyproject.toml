@@ -10,6 +10,7 @@ packages = [{include = "project"}]
 python = "^3.11"
 django = "^4.2.3"
 pillow = "^10.0.0"
+faker = "^19.2.0"
 
 
 [build-system]
