@@ -7,6 +7,7 @@ def index(request):
     
     context = {
         'contacts': contacts,
+        'site_title': 'Contatos',
     }
     
     return render(request, template_name='contact/index.html', context=context)
@@ -18,6 +19,7 @@ def contact(request, contact_id):
 
     context = {
         'contact': single_contact,
+        'site_title': f"{single_contact.first_name} {single_contact.last_name}",
     }
     
     return render(request, template_name='contact/contact.html', context=context)
