@@ -4,7 +4,7 @@ from contact import models
 @admin.register(models.Contact)
 class ContactAdmin(admin.ModelAdmin):
     #Campos que desejo mostrar na listagem dos registros
-    list_display = ('id', 'first_name', 'last_name', 'phone', 'email', 'description',)
+    list_display = ('id', 'first_name', 'last_name', 'phone', 'email', 'description', 'show')
     #Ordenando por qual campo. Crescente id, descrescente -id
     ordering = ('id',)
     #Filtrar
@@ -15,7 +15,7 @@ class ContactAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_max_show_all = 100
     #Editar sem entrar no registro
-    list_editable = ('first_name', 'last_name',)
+    list_editable = ('first_name', 'last_name', 'show')
     #Link para o registro
     list_display_links = ('id', 'phone',)
     
