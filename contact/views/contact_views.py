@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from contact.models import Contact
 
 def index(request):
@@ -10,3 +10,15 @@ def index(request):
     }
     
     return render(request, template_name='contact/index.html', context=context)
+
+def contact(request, contact_id):
+    # single_contact = Contact.objects.get(pk=contact_id) # Retorna um dado
+    # single_contact = Contact.objects.filter(pk=contact_id).last() # Retorna uma queryset (uma lista), por isso o last() para pegar somente o ultimo
+    single_contact = get_object_or_404(Contact.objects.filter(pk=contact_id, show=True)) # faz automaticamente e se precisar retorna o 404
+
+    context = {
+        'contact': single_contact,
+    }
+    
+    return render(request, template_name='contact/contact.html', context=context)
+
