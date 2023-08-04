@@ -1,13 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from contact.models import Contact
+from django.core.paginator import Paginator
 
 def index(request):
     # filtrando onde show é true e ordena por id crescente
-    contacts = Contact.objects.filter(show=True).order_by('id')[:10]
+    contacts_list = Contact.objects.filter(show=True).order_by('id')
+    
+    paginator = Paginator(contacts_list, 25)
+    page_number =  request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     
     context = {
-        'contacts': contacts,
+        'page_obj': page_obj,
         'site_title': 'Contatos',
     }
     
@@ -28,6 +33,13 @@ def contact(request, contact_id):
 def search(request):
     search_value = request.GET.get('q', '').strip()
     
+    contacts_list = Contact.objects.filter(show=True).order_by('id')
+    
+    paginator = Paginator(contacts_list, 25)
+    page_number =  request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    
     if search_value == '':
         return redirect('contact:index')
     
@@ -36,8 +48,9 @@ def search(request):
     contacts = Contact.objects.filter(show=True).filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value) |  Q(email__icontains=search_value)).order_by('id')[:10] # OR
     
     context = {
-        'contacts': contacts,
+        'page_obj': page_obj,
         'site_title': 'Contatos',
+        'search_value': search_value,
     }
     
     return render(request, template_name='contact/index.html', context=context)
