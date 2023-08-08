@@ -7,7 +7,7 @@ def index(request):
     # filtrando onde show é true e ordena por id crescente
     contacts_list = Contact.objects.filter(show=True).order_by('id')
     
-    paginator = Paginator(contacts_list, 25)
+    paginator = Paginator(contacts_list, 10)
     page_number =  request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     
@@ -33,11 +33,12 @@ def contact(request, contact_id):
 def search(request):
     search_value = request.GET.get('q', '').strip()
     
-    contacts_list = Contact.objects.filter(show=True).order_by('id')
+    if search_value == '':
+        return redirect('contact:index')
     
-    paginator = Paginator(contacts_list, 25)
-    page_number =  request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    # contacts_list = Contact.objects.filter(show=True).order_by('id')
+    
+   
     
     
     if search_value == '':
@@ -45,7 +46,11 @@ def search(request):
     
     # https://docs.djangoproject.com/en/4.2/ref/models/querysets/#field-lookups
     # filter(first_name__icontains=search_value, last_name__icontains=search_value) == AND
-    contacts = Contact.objects.filter(show=True).filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value) |  Q(email__icontains=search_value)).order_by('id')[:10] # OR
+    contacts = Contact.objects.filter(show=True).filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value) |  Q(email__icontains=search_value)).order_by('id') # OR
+    
+    paginator = Paginator(contacts, 25)
+    page_number =  request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     
     context = {
         'page_obj': page_obj,
