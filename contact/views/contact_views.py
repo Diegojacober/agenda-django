@@ -38,9 +38,6 @@ def search(request):
     
     # contacts_list = Contact.objects.filter(show=True).order_by('id')
     
-   
-    
-    
     if search_value == '':
         return redirect('contact:index')
     
