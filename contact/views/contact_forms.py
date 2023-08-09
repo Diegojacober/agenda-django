@@ -12,7 +12,8 @@ def create(request):
         return render(request, template_name='contact/create.html', context=context)
     
     context = {
-            'form': ContactForm()
+            'form': ContactForm(),
+            'site_title': 'Novo Contato',
     }
 
     return render(request, template_name='contact/create.html', context=context)
