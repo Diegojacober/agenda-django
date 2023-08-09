@@ -5,9 +5,17 @@ from contact.forms import ContactForm
 def create(request):
     
     if request.method == 'POST':
+        form = ContactForm(request.POST)
+        
         context = {
-            'form': ContactForm(request.POST)
+            'form': form
         }
+        
+        if form.is_valid():
+            contact = form.save(commit=False) #Assim não salvo e posso fazer alterações e só depois salvar
+            contact.show = True
+            contact.save()
+            return redirect('contact:index')
     
         return render(request, template_name='contact/create.html', context=context)
     

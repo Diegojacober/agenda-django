@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 
 def index(request):
     # filtrando onde show é true e ordena por id crescente
-    contacts_list = Contact.objects.filter(show=True).order_by('id')
+    contacts_list = Contact.objects.filter(show=True).order_by('-id')
     
     paginator = Paginator(contacts_list, 10)
     page_number =  request.GET.get("page")
