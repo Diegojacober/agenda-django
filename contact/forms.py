@@ -27,13 +27,27 @@ class ContactForm(forms.ModelForm):
 
     def clean(self) -> Dict[str, Any]:
         cleaned_data = self.cleaned_data
+        first_name = cleaned_data.get('first_name')
+        last_name = cleaned_data.get('last_name')
         
-        self.add_error(
-            None, ValidationError('Mensagem de erro', code='invalid')
-        )
+        if first_name == last_name:
+            self.add_error( 'first_name' , ValidationError('Primeiro nome não pode ser igual ao segundo nome', code='Invalid'))
+            self.add_error( 'last_name' , ValidationError('Primeiro nome não pode ser igual ao segundo nome', code='Invalid'))
         
-        self.add_error(
-            None, ValidationError('Mensagem de erro 2', code='invalid')
-        )
+        # self.add_error(
+        #     None, ValidationError('Mensagem de erro', code='invalid')
+        # )
         
-        return super().clean()    
+        # self.add_error(
+        #     None, ValidationError('Mensagem de erro 2', code='invalid')
+        # )
+        
+        return super().clean() 
+    
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        
+        if first_name == 'ABC':
+            raise ValidationError('Não Digite ABC', code='invalid')
+        
+        return first_name
