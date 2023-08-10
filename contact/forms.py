@@ -4,6 +4,15 @@ from django.core.exceptions import ValidationError
 from typing import Any, Dict
 
 class ContactForm(forms.ModelForm):
+    picture = forms.ImageField(
+        widget=forms.FileInput(
+            attrs={
+                'accept': 'image/*',
+            }
+        ),
+        required=False
+    )
+    
     first_name = forms.CharField(
         widget=forms.TextInput(
              attrs={
@@ -14,12 +23,12 @@ class ContactForm(forms.ModelForm):
         label='Primeiro Nome',
     )
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
     
     class Meta:
         model = Contact
-        fields = ('first_name', 'last_name', 'phone', 'email', 'description', 'category')
+        fields = ('first_name', 'last_name', 'phone', 'email', 'description', 'category', 'picture' )
         
        
         
