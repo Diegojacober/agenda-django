@@ -1,9 +1,12 @@
 from contact.models import Contact
 from django import forms
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from typing import Any, Dict
 
 class ContactForm(forms.ModelForm):
+
     picture = forms.ImageField(
         widget=forms.FileInput(
             attrs={
@@ -60,3 +63,40 @@ class ContactForm(forms.ModelForm):
             raise ValidationError('Não Digite ABC', code='invalid')
         
         return first_name
+    
+class RegisterForm(UserCreationForm):
+    
+    first_name = forms.CharField(
+        required=True,
+        min_length=3,
+        error_messages={
+            'required': 'Campo requerido'
+        }
+    )
+    
+    last_name = forms.CharField(
+        required=True,
+        min_length=3,
+    )
+    
+    email = forms.EmailField(
+        required=True,
+        min_length=3,
+    )
+    
+    class Meta:
+        model = User
+        fields = 'first_name', 'last_name', 'email', 'username', 'password1', 'password2'
+        
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        
+        if User.objects.filter(email=email).exists():
+            self.add_error(
+                'email',
+                ValidationError('E-mail existente', code='Invalid')
+            )
+            
+        return email
+        
+        
