@@ -26,7 +26,10 @@ def contact(request, contact_id):
     context = {
         'contact': single_contact,
         'site_title': f"{single_contact.first_name} {single_contact.last_name}",
+        'user': request.user
     }
+    
+    print(request.user)
     
     return render(request, template_name='contact/contact.html', context=context)
 
